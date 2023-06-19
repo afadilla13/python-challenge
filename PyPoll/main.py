@@ -6,22 +6,23 @@ import os
 import csv
 
 # open and read csv
-csvpath=os.path.join('Resources','election_data.csv')
-with open(csvpath, newline='') as csvfile:
+PyPoolcsv = os.path.join('Resources','election_data.csv')
+with open(PyPoolcsv, newline='') as csvfile:
     csvreader = csv.reader(csvfile, delimiter=',')
     csv_header = next(csvreader)
-    print(f"Header: {csv_header}")
+
+    #Declares variables
+    CCS_votes = 0
+    DD_votes = 0
+    RAD_votes = 0
     
-    # Declaring variables
+    # Create list to store data
     votes = []
     county = []
     candidates = []
-    Charles_Casper_Stockham = []
-    Diana_DeGette = []
-    Raymon_Anthony_Doane = []
-    Charles_Casper_Stockham_votes = 0
-    Diana_DeGette_votes = 0
-    Raymon_Anthony_Doane_votes = 0
+    CCS = []
+    DD = []
+    RAD = []
 
     # read each row of data after header
     for row in csvreader:
@@ -29,42 +30,32 @@ with open(csvpath, newline='') as csvfile:
         county.append(row[1])
         candidates.append(row[2])
 
-    # VOTE COUNT
-    total_votes = (len(votes))
-    # print(total_votes)
+    # Total vote count
+    Total_votes = (len(votes))
 
-    # Votes by Person
+    # Votes by each candidates
     for x in candidates:
         if x == "Charles Casper Stockham":
-            Charles_Casper_Stockham.append(candidates)
-            Charles_Casper_Stockham_votes = len(Charles_Casper_Stockham)
+            CCS.append(candidates)
+            CCS_votes = len(CCS)
             
         elif x == "Diana DeGette":
-            Diana_DeGette.append(candidates)
-            Diana_DeGette_votes = len(Diana_DeGette)
+            DD.append(candidates)
+            DD_votes = len(DD)
             
         else:
-            Raymon_Anthony_Doane.append(candidates)
-            Raymon_Anthony_Doane_votes = len(Raymon_Anthony_Doane)
+            RAD.append(candidates)
+            RAD_votes = len(RAD)
     
-    # print(Charles_Casper_Stockham_votes)
-    # print(Diana_DeGette_votes)
-    # print(Raymon_Anthony_Doane_votes)
-    
-    
-    # Percentages
-    Charles_Casper_Stockham_percent = round(((Charles_Casper_Stockham_votes / total_votes) * 100), 3)
-    Diana_DeGette_percent = round(((Diana_DeGette_votes / total_votes) * 100), 3)
-    Raymon_Anthony_Doane_percent = round(((Raymon_Anthony_Doane_votes / total_votes) * 100), 3)
-    # print(Charles_Casper_Stockham_percent)
-    # print(Diana_DeGette_percent)
-    # print(Raymon_Anthony_Doane_percent)
+    # Find percentages for each candidates
+    CCS_percent = round(((CCS_votes / Total_votes) * 100), 3)
+    DD_percent = round(((DD_votes / Total_votes) * 100), 3)
+    RAD_percent = round(((RAD_votes / Total_votes) * 100), 3)
 
-    
-    # Winner 
-    if Charles_Casper_Stockham_percent > max(Diana_DeGette_percent, Raymon_Anthony_Doane_percent):
+    # If statement for the winner 
+    if CCS_percent > max(DD_percent, RAD_percent):
         winner = "Charles_Casper_Stockham"
-    elif Diana_DeGette_percent > max(Charles_Casper_Stockham_percent, Raymon_Anthony_Doane_percent):
+    elif DD_percent > max(CCS_percent, RAD_percent):
         winner = "Diana_DeGette"  
     else:
         winner = "Raymon_Anthony_Doane"
@@ -81,24 +72,23 @@ with open(csvpath, newline='') as csvfile:
     # Print Statements
     print(f'''Election Results
 -----------------------------------
-Total Votes: {total_votes}
+Total Votes: {Total_votes}
 -----------------------------------
-Charles_Casper_Stockham_percent: {Charles_Casper_Stockham_percent}% ({Charles_Casper_Stockham_votes})
-Diana_DeGette: {Diana_DeGette_percent}% ({Diana_DeGette_votes})
-Raymon_Anthony_Doane: {Raymon_Anthony_Doane_percent}% ({Raymon_Anthony_Doane_votes})
+Charles_Casper_Stockham_percent: {CCS_percent}% ({CCS_votes})
+Diana_DeGette: {DD_percent}% ({DD_votes})
+Raymon_Anthony_Doane: {RAD_percent}% ({RAD_votes})
 -----------------------------------
 Winner: {winner}
 -----------------------------------''')
 
-
     # Output to a text file
     file.write(f'''Election Results
 -----------------------------------
-Total Votes: {total_votes}
+Total Votes: {Total_votes}
 -----------------------------------
-Charles_Casper_Stockham_percent: {Charles_Casper_Stockham_percent}% ({Charles_Casper_Stockham_votes})
-Diana_DeGette: {Diana_DeGette_percent}% ({Diana_DeGette_votes})
-Raymon_Anthony_Doane: {Raymon_Anthony_Doane_percent}% ({Raymon_Anthony_Doane_votes})
+Charles_Casper_Stockham_percent: {CCS_percent}% ({CCS_votes})
+Diana_DeGette: {DD_percent}% ({DD_votes})
+Raymon_Anthony_Doane: {RAD_percent}% ({RAD_votes})
 -----------------------------------
 Winner: {winner}
 -----------------------------------''')
