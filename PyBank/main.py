@@ -5,89 +5,75 @@
 import os
 import csv
 
-#join path
-csvpath = 'Resources/budget_data.csv'
+#determine csv path
+Pybankcsv = 'Resources/budget_data.csv'
 
-# open and read csv
-with open(csvpath, newline="") as csvfile:
+# open and read csv file through the scv path & read the header row first (skip this step if there is no header)
+with open(Pybankcsv, newline="") as csvfile:
     csvreader = csv.reader(csvfile, delimiter=',')
     csv_header = next(csvreader)
-    print(f"Header: {csv_header}")
 
-# open and read csv
-with open(csvpath) as csvfile:
-    csvreader = csv.reader(csvfile, delimiter=',')
+    # create list to store data of amount of profit and loss & month
+    Profit = []
+    Month = []
+    monthly_changes =[]
 
-    # read the header row first (skip this step if there is no header)
-    csv_header = next(csvreader)
-
-    # find net amount of profit and loss
-    P = []
-    months = []
-
-    # read each row of data after header
+    # loops through each row of data after header
     for rows in csvreader:
-        P.append(int(rows[1]))
-        months.append(rows[0])
+        Profit.append(int(rows[1]))
+        Month.append(rows[0])
 
-    # find revenue change
-    revenue_change =[]
+    for x in range(1, len(Profit)):
+        monthly_changes.append((int(Profit[x]) - int(Profit[x-1])))
 
-    for x in range(1, len(P)):
-        revenue_change.append((int(P[x]) - int(P[x-1])))
+    # calculate average monthly change
+    monthly_change_average = sum(monthly_changes) / len(monthly_changes)
+    monthly_average = round(monthly_change_average, 2)
 
-    # calculate average revenue change
-    revenue_average_change = sum(revenue_change) / len(revenue_change)
-    revenue_average = round(revenue_average_change, 2)
+    # calculate total length of month
+    Total_month = len(Month)
 
-    # calculate total length of months
-    total_months = len(months)
+    # find greatest increase & decrease in revenue
+    greatest_increase = max(monthly_changes)
+    greatest_decrease = min(monthly_changes)
 
-    # greatest increase in revenue
-    greatest_increase = max(revenue_change)
-
-    #greatest decrease in revenue
-    greatest_decrease = min(revenue_change)
-
-
-    # print Results
+    # print results
     print ("Financial Analysis")
 
     print("....................................................................................")
 
-    print ("Total Months:" + str(total_months))
+    print ("Total Month:" + str(Total_month))
 
-    print("Total:" + "$" + str(sum(P)))
+    print("Total:" + "$" + str(sum(Profit)))
 
-    print ("Average Change:" + "$" + str(revenue_average))
+    print ("Average Change:" + "$" + str(monthly_average))
 
-    print("Greatest Increase in Profits: " + str(months[revenue_change.index(max(revenue_change))+1]) + " " + "($" + str(greatest_increase) + ")")
+    print("Greatest Increase in Profits: " + str(Month[monthly_changes.index(max(monthly_changes))+1]) + " " + "($" + str(greatest_increase) + ")")
 
-    print("Greatest Decrease in Profits: " + str(months[revenue_change.index(min(revenue_change))+1]) + " " + "($" + str(greatest_decrease) + ")")
+    print("Greatest Decrease in Profits: " + str(Month[monthly_changes.index(min(monthly_changes))+1]) + " " + "($" + str(greatest_decrease) + ")")
 
     #spesify location of the path to write
     folder_path = 'Analysis'
     os.makedirs(folder_path)
 
-    #create a new file in the above folder
+    #create a new file in the spesified folder
     file_name = "output.txt"
     file_path = os.path.join(folder_path, file_name)    
     file = open(file_path, "w")
 
     # output to a text file
-
     file.write("Financial Analysis" + "\n")
 
     file.write("...................................................................................." + "\n")
 
-    file.write("total months: " + str(total_months) + "\n")
+    file.write("Total months: " + str(Total_month) + "\n")
 
-    file.write("Total: " + "$" + str(sum(P)) + "\n")
+    file.write("Total: " + "$" + str(sum(Profit)) + "\n")
 
-    file.write("Average change: " + "$" + str(revenue_average) + "\n")
+    file.write("Average change: " + "$" + str(monthly_average) + "\n")
 
-    file.write("Greatest Increase in Profits: " + str(months[revenue_change.index(max(revenue_change))+1]) + " " + "($" + str(greatest_increase) + ")\n")
+    file.write("Greatest Increase in Profits: " + str(Month[monthly_changes.index(max(monthly_changes))+1]) + " " + "($" + str(greatest_increase) + ")\n")
 
-    file.write("Greatest Decrease in Profits: " + str(months[revenue_change.index(min(revenue_change))+1]) + " " + "($" + str(greatest_decrease) + ")\n")
+    file.write("Greatest Decrease in Profits: " + str(Month[monthly_changes.index(min(monthly_changes))+1]) + " " + "($" + str(greatest_decrease) + ")\n")
 
     file.close()
