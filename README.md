@@ -20,5 +20,3 @@ After that it finds the votes by the candidates using the if functions.
 Finding percentage by deviding the candidates individual votes by the total votes and finding the winner by using another if statements.
 
 It finishes by defining location and creation by the folder and creating file name of the output file and print the results. 
-
-Shoutout to https://github.com/Salllym for referring the codes.
